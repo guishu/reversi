@@ -2,7 +2,16 @@ import pygame
 
 
 class BoardRenderer:
+    """
+    Handles board rendering and everything related to board on screen
+    """
+
     def __init__(self, board, area_size):
+        """
+        Constructor
+        :param board: The board model rendered by this instance
+        :param area_size: The size of the area on screen
+        """
         self.board = board
 
         self.background_color = pygame.Color("green4")
@@ -20,6 +29,10 @@ class BoardRenderer:
         )
 
     def render(self, surface):
+        """
+        Renders the board and its tokens on screen
+        :param surface: The surface (screen) to render on
+        """
         surface.fill(self.background_color, self.pos + (self.size, self.size))
 
         left = self.pos[0]
@@ -39,6 +52,11 @@ class BoardRenderer:
                     self._render_token(surface, token, x, y)
 
     def get_cell(self, pos):
+        """
+        Retreives the cell coordinates at given screen position
+        :param pos: The screen position
+        :return: A tuple (x, y) in board coordinates
+        """
         x = -1
         if pos[0] >= self.pos[0] <= self.pos[0] + self.size:
             x = (pos[0] - self.pos[0]) // self.tile_size
@@ -50,11 +68,23 @@ class BoardRenderer:
 
     @staticmethod
     def _compute_tile_size(area_size):
+        """
+        Computes ideal tile size for given surface size
+        :param area_size: The area size the board should fit in
+        :return: Ideal tile size
+        """
         smallest = min(area_size[0], area_size[1])
 
         return smallest // 8
 
     def _render_token(self, surface, player, x, y):
+        """
+        Renders a token on screen
+        :param surface: Surface to render on
+        :param player: Player index (0 or 1)
+        :param x: The x board coordinate to render on
+        :param y: The y board coordinate to render on
+        """
         if player == 0:
             color = self.player0_color
         else:
