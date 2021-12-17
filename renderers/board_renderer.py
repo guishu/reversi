@@ -8,6 +8,9 @@ class BoardRenderer:
         self.background_color = pygame.Color("green4")
         self.foreground_color = pygame.Color("black")
 
+        self.player0_color = pygame.Color("white")
+        self.player1_color = pygame.Color("black")
+
         self.tile_size = BoardRenderer._compute_tile_size(area_size)
 
         self.size = 8 * self.tile_size
@@ -43,9 +46,9 @@ class BoardRenderer:
 
     def _render_token(self, surface, player, x, y):
         if player == 0:
-            color = pygame.Color("white")
+            color = self.player0_color
         else:
-            color = pygame.Color("black")
+            color = self.player1_color
 
         pygame.draw.circle(
             surface,
