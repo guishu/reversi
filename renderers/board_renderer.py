@@ -2,7 +2,9 @@ import pygame
 
 
 class BoardRenderer:
-    def __init__(self, area_size):
+    def __init__(self, board, area_size):
+        self.board = board
+
         self.background_color = pygame.Color("green4")
         self.foreground_color = pygame.Color("black")
 
@@ -27,13 +29,19 @@ class BoardRenderer:
             pygame.draw.line(surface, self.foreground_color, (left + offset, top), (left + offset, bottom))
             pygame.draw.line(surface, self.foreground_color, (left, top + offset), (right, top + offset))
 
+        for x in range(0, 8):
+            for y in range(0, 8):
+                token = self.board.get_token(x, y)
+                if token != -1:
+                    self._render_token(surface, token, x, y)
+
     @staticmethod
     def _compute_tile_size(area_size):
         smallest = min(area_size[0], area_size[1])
 
         return smallest // 8
 
-    def render_token(self, surface, player, x, y):
+    def _render_token(self, surface, player, x, y):
         if player == 0:
             color = pygame.Color("white")
         else:

@@ -1,6 +1,7 @@
 import pygame
 
 from renderers.board_renderer import BoardRenderer
+from model.board import Board
 
 
 def main():
@@ -10,7 +11,9 @@ def main():
 
     screen = pygame.display.set_mode((800, 600))
 
-    board_renderer = BoardRenderer(screen.get_size())
+    board = Board()
+    board.set_start_position()
+    board_renderer = BoardRenderer(board, screen.get_size())
 
     running = True
 
@@ -22,11 +25,6 @@ def main():
         screen.fill(pygame.Color("black"))
 
         board_renderer.render(screen)
-
-        board_renderer.render_token(screen, 0, 3, 3)
-        board_renderer.render_token(screen, 0, 4, 4)
-        board_renderer.render_token(screen, 1, 3, 4)
-        board_renderer.render_token(screen, 1, 4, 3)
 
         pygame.display.flip()
 
