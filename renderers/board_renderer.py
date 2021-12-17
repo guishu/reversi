@@ -55,13 +55,13 @@ class BoardRenderer:
         """
         Retreives the cell coordinates at given screen position
         :param pos: The screen position
-        :return: A tuple (x, y) in board coordinates
+        :return: A tuple (x, y) in board coordinates. Component is -1 if out of the board.
         """
         x = -1
-        if pos[0] >= self.pos[0] <= self.pos[0] + self.size:
+        if self.pos[0] <= pos[0] <= self.pos[0] + self.size:
             x = (pos[0] - self.pos[0]) // self.tile_size
         y = -1
-        if pos[1] >= self.pos[1] <= self.pos[1] + self.size:
+        if self.pos[1] <= pos[1] <= self.pos[1] + self.size:
             y = (pos[1] - self.pos[1]) // self.tile_size
 
         return x, y
