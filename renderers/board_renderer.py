@@ -1,5 +1,6 @@
 import pygame
 
+
 class BoardRenderer:
     def __init__(self, area_size):
         self.background_color = pygame.Color("green4")
@@ -13,12 +14,6 @@ class BoardRenderer:
                 (area_size[1] - self.size) // 2,
         )
 
-    @staticmethod
-    def _compute_tile_size(area_size):
-        smallest = min(area_size[0], area_size[1])
-
-        return smallest // 8
-
     def render(self, surface):
         surface.fill(self.background_color, self.pos + (self.size, self.size))
 
@@ -31,6 +26,12 @@ class BoardRenderer:
             offset = self.tile_size * i
             pygame.draw.line(surface, self.foreground_color, (left + offset, top), (left + offset, bottom))
             pygame.draw.line(surface, self.foreground_color, (left, top + offset), (right, top + offset))
+
+    @staticmethod
+    def _compute_tile_size(area_size):
+        smallest = min(area_size[0], area_size[1])
+
+        return smallest // 8
 
     def render_token(self, surface, player, x, y):
         if player == 0:
