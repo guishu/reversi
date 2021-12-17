@@ -38,6 +38,16 @@ class BoardRenderer:
                 if token != -1:
                     self._render_token(surface, token, x, y)
 
+    def get_cell(self, pos):
+        x = -1
+        if pos[0] >= self.pos[0] <= self.pos[0] + self.size:
+            x = (pos[0] - self.pos[0]) // self.tile_size
+        y = -1
+        if pos[1] >= self.pos[1] <= self.pos[1] + self.size:
+            y = (pos[1] - self.pos[1]) // self.tile_size
+
+        return x, y
+
     @staticmethod
     def _compute_tile_size(area_size):
         smallest = min(area_size[0], area_size[1])

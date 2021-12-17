@@ -21,6 +21,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONUP:
+                x, y = board_renderer.get_cell(event.pos)
+                print(f"Clicked {x}, {y}")
 
         screen.fill(pygame.Color("black"))
 
