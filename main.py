@@ -1,7 +1,7 @@
 import pygame
 
 from renderers.board_renderer import BoardRenderer
-from model.board import Board
+from model.game import Game
 
 
 def main():
@@ -11,9 +11,8 @@ def main():
 
     screen = pygame.display.set_mode((800, 600))
 
-    board = Board()
-    board.set_start_position()
-    board_renderer = BoardRenderer(board, screen.get_size())
+    game = Game()
+    board_renderer = BoardRenderer(game.board, screen.get_size())
 
     running = True
 
@@ -23,7 +22,7 @@ def main():
                 running = False
             elif event.type == pygame.MOUSEBUTTONUP:
                 x, y = board_renderer.get_cell(event.pos)
-                print(f"Clicked {x}, {y}")
+                game.play(x, y)
 
         screen.fill(pygame.Color("black"))
 
