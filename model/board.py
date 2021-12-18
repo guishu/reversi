@@ -69,6 +69,15 @@ class Board:
             self._check_direction(x, y, 0, 1, to_play)
         )
 
+    def get_valid_moves(self, to_play):
+        result = []
+        for x in range(0, 8):
+            for y in range(0, 8):
+                if self.is_valid_move(x, y, to_play):
+                    result.append((x, y))
+
+        return result
+
     def _check_direction(self, x, y, dx, dy, to_play):
         cur_x = x + dx
         cur_y = y + dy
