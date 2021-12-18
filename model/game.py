@@ -12,3 +12,7 @@ class Game:
             self.to_play = 1 - self.to_play
             if not self.board.get_valid_moves(self.to_play):
                 self.to_play = 1 - self.to_play
+                if not self.board.get_valid_moves(self.to_play):
+                    return False
+
+        return True

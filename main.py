@@ -22,7 +22,7 @@ def main():
                 running = False
             elif event.type == pygame.MOUSEBUTTONUP:
                 x, y = board_renderer.get_cell(event.pos)
-                game.play(x, y)
+                running = game.play(x, y)
 
         screen.fill(pygame.Color("burlywood"))
 
