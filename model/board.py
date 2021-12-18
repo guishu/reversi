@@ -32,6 +32,21 @@ class Board:
 
         self.board[y * self.size + x] = value
 
+    def play_token(self, x, y, value):
+        if x < 0 or x >= 8 or y < 0 or y >= 8:
+            raise Exception(f"Wrong coordinate for token: {x}, {y}")
+
+        if not self.is_valid_move(x, y, value):
+            return False
+
+        self.set_token(x, y, value)
+        self._play_direction(x, y, -1, 0, value)
+        self._play_direction(x, y, 1, 0, value)
+        self._play_direction(x, y, 0, 1, value)
+        self._play_direction(x, y, 0, -1, value)
+
+        return True
+
     def set_start_position(self):
         """
         Initialises the board in a starting game position.
@@ -66,3 +81,17 @@ class Board:
             cur_y += dy
 
         return cur == to_play
+
+    def _play_direction(self, x, y, dx, dy, to_play):
+        if not self._check_direction(x, y, dx, dy, to_play):
+            return
+
+        cur_x = x + dx
+        cur_y = y + dy
+        opponent = 1 - to_play
+        while self.get_token(cur_x, cur_y) == opponent:
+            self.set_token(cur_x, cur_y, to_play)
+            cur_x += dx
+            cur_y += dy
+
+

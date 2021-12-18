@@ -8,6 +8,5 @@ class Game:
         self.to_play = 0
 
     def play(self, x, y):
-        if self.board.is_valid_move(x, y, self.to_play):
-            self.board.set_token(x, y, self.to_play)
+        if self.board.play_token(x, y, self.to_play):
             self.to_play = 1 - self.to_play
