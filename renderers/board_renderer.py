@@ -6,13 +6,14 @@ class BoardRenderer:
     Handles board rendering and everything related to board on screen
     """
 
-    def __init__(self, board, area_size):
+    def __init__(self, game, area_size):
         """
         Constructor
         :param board: The board model rendered by this instance
         :param area_size: The size of the area on screen
         """
-        self.board = board
+        self.game = game
+        self.board = game.board
 
         self.background_color = pygame.Color("green4")
         self.foreground_color = pygame.Color("black")
@@ -50,6 +51,21 @@ class BoardRenderer:
                 token = self.board.get_token(x, y)
                 if token != -1:
                     self._render_token(surface, token, x, y)
+
+        tok_x = self.pos[0] // 2
+        tok_y = self.pos[1] + self.size // 2
+        tok_radius = self.tile_size * 0.4
+        pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
+        if self.game.to_play == 0:
+            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+
+        tok_x += self.pos[0] + self.size
+        pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
+        if self.game.to_play == 1:
+            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+
+
+
 
     def get_cell(self, pos):
         """

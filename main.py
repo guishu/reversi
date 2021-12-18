@@ -12,7 +12,7 @@ def main():
     screen = pygame.display.set_mode((800, 600))
 
     game = Game()
-    board_renderer = BoardRenderer(game.board, screen.get_size())
+    board_renderer = BoardRenderer(game, screen.get_size())
 
     running = True
 
@@ -24,7 +24,7 @@ def main():
                 x, y = board_renderer.get_cell(event.pos)
                 game.play(x, y)
 
-        screen.fill(pygame.Color("black"))
+        screen.fill(pygame.Color("burlywood"))
 
         board_renderer.render(screen)
 
