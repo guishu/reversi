@@ -64,9 +64,6 @@ class BoardRenderer:
         if self.game.to_play == 1:
             pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
 
-
-
-
     def get_cell(self, pos):
         """
         Retreives the cell coordinates at given screen position

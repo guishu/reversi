@@ -44,6 +44,10 @@ class Board:
         self._play_direction(x, y, 1, 0, value)
         self._play_direction(x, y, 0, 1, value)
         self._play_direction(x, y, 0, -1, value)
+        self._play_direction(x, y, 1, 1, value)
+        self._play_direction(x, y, -1, -1, value)
+        self._play_direction(x, y, 1, -1, value)
+        self._play_direction(x, y, -1, 1, value)
 
         return True
 
@@ -66,7 +70,11 @@ class Board:
             self._check_direction(x, y, -1, 0, to_play) or
             self._check_direction(x, y, 1, 0, to_play) or
             self._check_direction(x, y, 0, -1, to_play) or
-            self._check_direction(x, y, 0, 1, to_play)
+            self._check_direction(x, y, 0, 1, to_play) or
+            self._check_direction(x, y, 1, 1, to_play) or
+            self._check_direction(x, y, -1, -1, to_play) or
+            self._check_direction(x, y, 1, -1, to_play) or
+            self._check_direction(x, y, -1, 1, to_play)
         )
 
     def get_valid_moves(self, to_play):
