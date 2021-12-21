@@ -1,7 +1,9 @@
 import pygame
 
+from engine.renderer import Renderer
 
-class BoardRenderer:
+
+class BoardRenderer(Renderer):
     """
     Handles board rendering and everything related to board on screen
     """
