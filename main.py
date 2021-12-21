@@ -1,7 +1,6 @@
 import pygame
 
-from renderers.board_renderer import BoardRenderer
-from model.game import Game
+from scenes.game_scene import GameScene
 
 
 def main():
@@ -11,22 +10,14 @@ def main():
 
     screen = pygame.display.set_mode((800, 600))
 
-    game = Game()
-    board_renderer = BoardRenderer(game, screen.get_size())
+    game_scene = GameScene(screen)
 
     running = True
 
     while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONUP:
-                x, y = board_renderer.get_cell(event.pos)
-                running = game.play(x, y)
+        running = game_scene.handle_events()
 
-        screen.fill(pygame.Color("burlywood"))
-
-        board_renderer.render(screen)
+        game_scene.render()
 
         pygame.display.flip()
 
