@@ -15,7 +15,11 @@ def main():
     running = True
 
     while running:
-        running = game_scene.handle_events()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            else:
+                running = game_scene.handle_events(event)
 
         game_scene.render()
 

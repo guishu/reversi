@@ -10,14 +10,11 @@ class GameScene:
         self.game = Game()
         self.board_renderer = BoardRenderer(self.game, surface.get_size())
 
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+    def handle_events(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            x, y = self.board_renderer.get_cell(event.pos)
+            if not self.game.play(x, y):
                 return False
-            elif event.type == pygame.MOUSEBUTTONUP:
-                x, y = self.board_renderer.get_cell(event.pos)
-                if not self.game.play(x, y):
-                    return False
 
         return True
 
