@@ -1,10 +1,11 @@
 import pygame
 
+from engine.scene import Scene
 from model.game import Game
 from renderers.board_renderer import BoardRenderer
 
 
-class GameScene:
+class GameScene(Scene):
     def __init__(self, surface):
         self.surface = surface
         self.game = Game()
