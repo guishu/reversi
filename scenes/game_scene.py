@@ -18,7 +18,7 @@ class GameScene(Scene):
             x, y = self.board_renderer.get_cell(event.pos)
             if not self.game.play(x, y):
                 sm.scenes.remove(self)
-                sm.scenes.insert(0, MessageScene(self.surface, "Game over"))
+                sm.scenes.insert(0, MessageScene(self.surface, "Game over", fore_color=pygame.Color("black"), back_color=pygame.Color("white")))
 
     def render(self):
         self.surface.fill(pygame.Color("burlywood"))
