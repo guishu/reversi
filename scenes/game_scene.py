@@ -9,7 +9,7 @@ from scenes.message_scene import MessageScene
 
 class GameScene(Scene):
     def __init__(self, surface):
-        self.surface = surface
+        super().__init__(surface)
         self.game = Game()
         self.board_renderer = BoardRenderer(self.game, surface.get_size())
 

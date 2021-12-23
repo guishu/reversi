@@ -5,7 +5,7 @@ from engine.scene import Scene
 
 class MessageScene(Scene):
     def __init__(self, surface):
-        self.surface = surface
+        super().__init__(surface)
 
     def handle_events(self, event):
         pass
