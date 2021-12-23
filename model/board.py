@@ -58,8 +58,8 @@ class Board:
         """
         self.board = [-1] * 64
         self.set_token(3, 3, 0)
-#        self.set_token(4, 4, 0)
-#        self.set_token(3, 4, 1)
+        self.set_token(4, 4, 0)
+        self.set_token(3, 4, 1)
         self.set_token(4, 3, 1)
 
     def is_valid_move(self, x, y, to_play):
