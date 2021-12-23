@@ -73,6 +73,12 @@ class BoardRenderer(Renderer):
 
         return x, y
 
+    def on_new_token(self, pos, color):
+        print(f"{pos} - {color} created")
+
+    def on_token_switch(self, pos, color):
+        print(f"{pos} - {color} switched")
+
     @staticmethod
     def _compute_tile_size(area_size):
         """

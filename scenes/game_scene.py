@@ -3,6 +3,7 @@ import pygame
 from engine import scene_manager as sm
 from engine.scene import Scene
 from model.game import Game
+from model.board import TOKEN_CREATED_EVENT, TOKEN_SWITCHED_EVENT
 from renderers.board_renderer import BoardRenderer
 from scenes.message_scene import MessageScene
 
@@ -18,6 +19,10 @@ class GameScene(Scene):
             x, y = self.board_renderer.get_cell(event.pos)
             if not self.game.play(x, y):
                 self._game_over()
+        elif event.type == TOKEN_CREATED_EVENT:
+            self.board_renderer.on_new_token(event.pos, event.color)
+        elif event.type == TOKEN_SWITCHED_EVENT:
+            self.board_renderer.on_token_switch(event.pos, event.color)
 
     def render(self):
         self.surface.fill(pygame.Color("burlywood"))

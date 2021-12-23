@@ -1,3 +1,9 @@
+import pygame
+
+TOKEN_CREATED_EVENT = pygame.USEREVENT + 1
+TOKEN_SWITCHED_EVENT = pygame.USEREVENT + 2
+
+
 class Board:
     """
     This is the actual board implementation.
@@ -30,7 +36,15 @@ class Board:
         if x < 0 or x >= 8 or y < 0 or y >= 8:
             raise Exception(f"Wrong coordinate for token: {x}, {y}")
 
-        self.board[y * self.size + x] = value
+        index = y * self.size + x
+        old_value = self.board[index]
+
+        self.board[index] = value
+
+        event = TOKEN_CREATED_EVENT
+        if old_value != -1:
+            event = TOKEN_SWITCHED_EVENT
+        pygame.event.post(pygame.event.Event(event, pos=(x, y), color=value))
 
     def play_token(self, x, y, value):
         if x < 0 or x >= 8 or y < 0 or y >= 8:
