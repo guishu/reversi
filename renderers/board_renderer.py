@@ -64,15 +64,13 @@ class BoardRenderer(Renderer):
         pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
         if self.game.to_play == 0:
             pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        img = self.font.render(str(score[0]), True, self.player1_color)
-        surface.blit(img, (tok_x - tok_radius // 2, tok_y - tok_radius // 2))
+        self._draw_score(surface, (tok_x, tok_y), score[0], self.player1_color)
 
         tok_x += self.pos[0] + self.size
         pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
         if self.game.to_play == 1:
             pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        img = self.font.render(str(score[1]), True, self.player0_color)
-        surface.blit(img, (tok_x - tok_radius // 2, tok_y - tok_radius // 2))
+        self._draw_score(surface, (tok_x, tok_y), score[1], self.player0_color)
 
     def get_cell(self, pos):
         """
@@ -118,3 +116,10 @@ class BoardRenderer(Renderer):
             color,
             (self.pos[0] + self.tile_size * (x + 0.5), self.pos[1] + self.tile_size * (y + 0.5)),
             self.tile_size * 0.4)
+
+    def _draw_score(self, surface, pos_center, score, color):
+        text = self.font.render(str(score), True, color)
+        text_width, text_height =  text.get_size()
+        x = pos_center[0] - text_width // 2
+        y = pos_center[1] - text_height // 2
+        surface.blit(text, (x, y))
