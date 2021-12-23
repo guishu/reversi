@@ -16,3 +16,6 @@ class Game:
                     return False
 
         return True
+
+    def get_score(self):
+        return self.board.get_score()

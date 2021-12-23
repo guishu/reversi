@@ -86,6 +86,11 @@ class Board:
 
         return result
 
+    def get_score(self):
+        player_0 = self.board.count(0)
+        player_1 = self.board.count(1)
+        return player_0, player_1
+
     def _check_direction(self, x, y, dx, dy, to_play):
         cur_x = x + dx
         cur_y = y + dy

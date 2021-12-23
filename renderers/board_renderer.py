@@ -25,6 +25,8 @@ class BoardRenderer(Renderer):
 
         self.tile_size = BoardRenderer._compute_tile_size(area_size)
 
+        self.font = pygame.font.SysFont(None, 24)
+
         self.size = 8 * self.tile_size
         self.pos = (
                 (area_size[0] - self.size) // 2,
@@ -54,17 +56,23 @@ class BoardRenderer(Renderer):
                 if token != -1:
                     self._render_token(surface, token, x, y)
 
+        score = self.board.get_score()
+
         tok_x = self.pos[0] // 2
         tok_y = self.pos[1] + self.size // 2
         tok_radius = self.tile_size * 0.4
         pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
         if self.game.to_play == 0:
             pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+        img = self.font.render(str(score[0]), True, self.player1_color)
+        surface.blit(img, (tok_x - tok_radius // 2, tok_y - tok_radius // 2))
 
         tok_x += self.pos[0] + self.size
         pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
         if self.game.to_play == 1:
             pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+        img = self.font.render(str(score[1]), True, self.player0_color)
+        surface.blit(img, (tok_x - tok_radius // 2, tok_y - tok_radius // 2))
 
     def get_cell(self, pos):
         """
