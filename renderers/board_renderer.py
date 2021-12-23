@@ -35,6 +35,7 @@ class BoardRenderer(Renderer):
         )
 
         self.tokens = {}
+        self._prepare_turn_tokens()
 
     def render(self, surface):
         """
@@ -104,22 +105,28 @@ class BoardRenderer(Renderer):
 
         return smallest // 8
 
-    def _draw_turn(self, surface):
-        score = self.board.get_score()
-
+    def _prepare_turn_tokens(self):
         tok_x = self.pos[0] // 2
         tok_y = self.pos[1] + self.size // 2
         tok_radius = self.tile_size * 0.4
-        pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
-        if self.game.to_play == 0:
-            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        self._draw_score(surface, (tok_x, tok_y), score[0], self.player1_color)
+        self.tokens[(-1, -1)] = TokenRenderer((tok_x, tok_y), tok_radius, self.player0_color)
 
         tok_x += self.pos[0] + self.size
-        pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
-        if self.game.to_play == 1:
-            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        self._draw_score(surface, (tok_x, tok_y), score[1], self.player0_color)
+        self.tokens[(-2, -2)] = TokenRenderer((tok_x, tok_y), tok_radius, self.player1_color)
+
+    def _draw_turn(self, surface):
+        score = self.board.get_score()
+
+        token_0 = self.tokens[(-1, -1)]
+        token_1 = self.tokens[(-2, -2)]
+
+        if self.game.to_play == 0:
+            pygame.draw.circle(surface, pygame.Color("red"), token_0.pos, token_0.size + 3, width=3)
+        else:
+            pygame.draw.circle(surface, pygame.Color("red"), token_1.pos, token_1.size + 3, width=3)
+
+        self._draw_score(surface, token_0.pos, score[0], self.player1_color)
+        self._draw_score(surface, token_1.pos, score[1], self.player0_color)
 
     def _draw_score(self, surface, pos_center, score, color):
         text = self.font.render(str(score), True, color)
