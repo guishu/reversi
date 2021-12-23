@@ -1,6 +1,7 @@
 import pygame
 
 from engine.renderer import Renderer
+from renderers.token_renderer import TokenRenderer
 
 
 class BoardRenderer(Renderer):
@@ -33,6 +34,8 @@ class BoardRenderer(Renderer):
                 (area_size[1] - self.size) // 2,
         )
 
+        self.tokens = {}
+
     def render(self, surface):
         """
         Renders the board and its tokens on screen
@@ -50,11 +53,8 @@ class BoardRenderer(Renderer):
             pygame.draw.line(surface, self.foreground_color, (left + offset, top), (left + offset, bottom))
             pygame.draw.line(surface, self.foreground_color, (left, top + offset), (right, top + offset))
 
-        for x in range(0, 8):
-            for y in range(0, 8):
-                token = self.board.get_token(x, y)
-                if token != -1:
-                    self._render_token(surface, token, x, y)
+        for token in self.tokens.values():
+            token.render(surface)
 
         self._draw_turn(surface)
 
@@ -74,10 +74,24 @@ class BoardRenderer(Renderer):
         return x, y
 
     def on_new_token(self, pos, color):
-        print(f"{pos} - {color} created")
+        if color == 0:
+            token_color = self.player0_color
+        else:
+            token_color = self.player1_color
+
+        token_x = self.pos[0] + self.tile_size * (pos[0] + 0.5)
+        token_y = self.pos[1] + self.tile_size * (pos[1] + 0.5)
+        token_size = self.tile_size * 0.4
+
+        self.tokens[pos] = TokenRenderer((token_x, token_y), token_size, token_color)
 
     def on_token_switch(self, pos, color):
-        print(f"{pos} - {color} switched")
+        if color == 0:
+            token_color = self.player0_color
+        else:
+            token_color = self.player1_color
+
+        self.tokens[pos].switch_color(token_color)
 
     @staticmethod
     def _compute_tile_size(area_size):
@@ -89,25 +103,6 @@ class BoardRenderer(Renderer):
         smallest = min(area_size[0], area_size[1])
 
         return smallest // 8
-
-    def _render_token(self, surface, player, x, y):
-        """
-        Renders a token on screen
-        :param surface: Surface to render on
-        :param player: Player index (0 or 1)
-        :param x: The x board coordinate to render on
-        :param y: The y board coordinate to render on
-        """
-        if player == 0:
-            color = self.player0_color
-        else:
-            color = self.player1_color
-
-        pygame.draw.circle(
-            surface,
-            color,
-            (self.pos[0] + self.tile_size * (x + 0.5), self.pos[1] + self.tile_size * (y + 0.5)),
-            self.tile_size * 0.4)
 
     def _draw_turn(self, surface):
         score = self.board.get_score()
