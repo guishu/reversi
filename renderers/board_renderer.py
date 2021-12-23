@@ -16,7 +16,6 @@ class BoardRenderer(Renderer):
         :param area_size: The size of the area on screen
         """
         self.game = game
-        self.board = game.board
 
         self.background_color = pygame.Color("green4")
         self.foreground_color = pygame.Color("black")
@@ -115,7 +114,7 @@ class BoardRenderer(Renderer):
         self.tokens[(-2, -2)] = TokenRenderer((tok_x, tok_y), tok_radius, self.player1_color)
 
     def _draw_turn(self, surface):
-        score = self.board.get_score()
+        score = self.game.get_score()
 
         token_0 = self.tokens[(-1, -1)]
         token_1 = self.tokens[(-2, -2)]
@@ -130,7 +129,7 @@ class BoardRenderer(Renderer):
 
     def _draw_score(self, surface, pos_center, score, color):
         text = self.font.render(str(score), True, color)
-        text_width, text_height =  text.get_size()
+        text_width, text_height = text.get_size()
         x = pos_center[0] - text_width // 2
         y = pos_center[1] - text_height // 2
         surface.blit(text, (x, y))
