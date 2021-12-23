@@ -17,9 +17,26 @@ class GameScene(Scene):
         if event.type == pygame.MOUSEBUTTONUP:
             x, y = self.board_renderer.get_cell(event.pos)
             if not self.game.play(x, y):
-                sm.scenes.remove(self)
-                sm.scenes.insert(0, MessageScene(self.surface, "Game over", fore_color=pygame.Color("black"), back_color=pygame.Color("white")))
+                self._game_over()
 
     def render(self):
         self.surface.fill(pygame.Color("burlywood"))
         self.board_renderer.render(self.surface)
+
+    def _game_over(self):
+        score = self.game.get_score()
+
+        if score[0] > score[1]:
+            message = f"Blanc gagne {score[0]} à {score[1]}."
+        elif score[1] > score[0]:
+            message = f"Noir 2 gagne {score[1]} à {score[0]}."
+        else:
+            message = f"Match nul, {score[0]} partout."
+
+        sm.scenes.remove(self)
+        sm.scenes.insert(0, MessageScene(
+            self.surface,
+            message,
+            fore_color=pygame.Color("black"),
+            back_color=pygame.Color("white"))
+        )
