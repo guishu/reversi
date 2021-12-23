@@ -56,25 +56,11 @@ class BoardRenderer(Renderer):
                 if token != -1:
                     self._render_token(surface, token, x, y)
 
-        score = self.board.get_score()
-
-        tok_x = self.pos[0] // 2
-        tok_y = self.pos[1] + self.size // 2
-        tok_radius = self.tile_size * 0.4
-        pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
-        if self.game.to_play == 0:
-            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        self._draw_score(surface, (tok_x, tok_y), score[0], self.player1_color)
-
-        tok_x += self.pos[0] + self.size
-        pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
-        if self.game.to_play == 1:
-            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
-        self._draw_score(surface, (tok_x, tok_y), score[1], self.player0_color)
+        self._draw_turn(surface)
 
     def get_cell(self, pos):
         """
-        Retreives the cell coordinates at given screen position
+        Retrieves the cell coordinates at given screen position
         :param pos: The screen position
         :return: A tuple (x, y) in board coordinates. Component is -1 if out of the board.
         """
@@ -116,6 +102,23 @@ class BoardRenderer(Renderer):
             color,
             (self.pos[0] + self.tile_size * (x + 0.5), self.pos[1] + self.tile_size * (y + 0.5)),
             self.tile_size * 0.4)
+
+    def _draw_turn(self, surface):
+        score = self.board.get_score()
+
+        tok_x = self.pos[0] // 2
+        tok_y = self.pos[1] + self.size // 2
+        tok_radius = self.tile_size * 0.4
+        pygame.draw.circle(surface, self.player0_color, (tok_x, tok_y), tok_radius)
+        if self.game.to_play == 0:
+            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+        self._draw_score(surface, (tok_x, tok_y), score[0], self.player1_color)
+
+        tok_x += self.pos[0] + self.size
+        pygame.draw.circle(surface, self.player1_color, (tok_x, tok_y), tok_radius)
+        if self.game.to_play == 1:
+            pygame.draw.circle(surface, pygame.Color("red"), (tok_x, tok_y), tok_radius + 3, width=3)
+        self._draw_score(surface, (tok_x, tok_y), score[1], self.player0_color)
 
     def _draw_score(self, surface, pos_center, score, color):
         text = self.font.render(str(score), True, color)
