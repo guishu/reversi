@@ -1,8 +1,10 @@
 import pygame
 
+from engine import scene_manager as sm
 from engine.scene import Scene
 from model.game import Game
 from renderers.board_renderer import BoardRenderer
+from scenes.message_scene import MessageScene
 
 
 class GameScene(Scene):
@@ -15,9 +17,8 @@ class GameScene(Scene):
         if event.type == pygame.MOUSEBUTTONUP:
             x, y = self.board_renderer.get_cell(event.pos)
             if not self.game.play(x, y):
-                return False
-
-        return True
+                sm.scenes.remove(self)
+                sm.scenes.insert(0, MessageScene(self.surface))
 
     def render(self):
         self.surface.fill(pygame.Color("burlywood"))

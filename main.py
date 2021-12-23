@@ -1,6 +1,6 @@
 import pygame
 
-from engine.scene import Scene
+from engine import scene_manager as sm
 from scenes.game_scene import GameScene
 
 
@@ -11,21 +11,17 @@ def main():
 
     screen = pygame.display.set_mode((800, 600))
 
-    scenes = [GameScene(screen)]
+    sm.scenes.append(GameScene(screen))
 
-    while scenes:
+    while sm.scenes:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                scenes = []
+                sm.scenes = []
             else:
-                for scene in scenes:
-                    result = scene.handle_events(event)
-                    if not result:
-                        scenes.remove(scene)
-                    elif type(result) == Scene:
-                        scenes.insert(0, result)
+                for scene in sm.scenes:
+                    scene.handle_events(event)
 
-        for scene in scenes:
+        for scene in sm.scenes:
             scene.render()
 
         pygame.display.flip()
