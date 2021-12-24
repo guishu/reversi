@@ -3,6 +3,8 @@ import pygame
 TOKEN_CREATED_EVENT = pygame.USEREVENT + 1
 TOKEN_SWITCHED_EVENT = pygame.USEREVENT + 2
 
+DIRECTIONS = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+
 
 class Board:
     """
@@ -21,7 +23,7 @@ class Board:
         :param y: y coordinate
         :return: -1 for no token, else player index
         """
-        if x < 0 or x >= 8 or y < 0 or y >= 8:
+        if not self._in_board(x, y):
             return -1
 
         return self.board[y * self.size + x]
@@ -33,17 +35,17 @@ class Board:
         :param y: y coordinate
         :param value: -1 for no token, else player index
         """
-        if x < 0 or x >= 8 or y < 0 or y >= 8:
+        if not self._in_board(x, y):
             raise Exception(f"Wrong coordinate for token: {x}, {y}")
 
         index = y * self.size + x
-        old_value = self.board[index]
+
+        event = TOKEN_CREATED_EVENT
+        if self.board[index] != -1:
+            event = TOKEN_SWITCHED_EVENT
 
         self.board[index] = value
 
-        event = TOKEN_CREATED_EVENT
-        if old_value != -1:
-            event = TOKEN_SWITCHED_EVENT
         pygame.event.post(pygame.event.Event(event, pos=(x, y), color=value))
 
     def play_token(self, x, y, value):
@@ -54,14 +56,8 @@ class Board:
             return False
 
         self.set_token(x, y, value)
-        self._play_direction(x, y, -1, 0, value)
-        self._play_direction(x, y, 1, 0, value)
-        self._play_direction(x, y, 0, 1, value)
-        self._play_direction(x, y, 0, -1, value)
-        self._play_direction(x, y, 1, 1, value)
-        self._play_direction(x, y, -1, -1, value)
-        self._play_direction(x, y, 1, -1, value)
-        self._play_direction(x, y, -1, 1, value)
+        for d in DIRECTIONS:
+            self._play_direction(x, y, d[0], d[1], value)
 
         return True
 
@@ -80,16 +76,7 @@ class Board:
         if self.get_token(x, y) != -1:
             return False
 
-        return (
-            self._check_direction(x, y, -1, 0, to_play) or
-            self._check_direction(x, y, 1, 0, to_play) or
-            self._check_direction(x, y, 0, -1, to_play) or
-            self._check_direction(x, y, 0, 1, to_play) or
-            self._check_direction(x, y, 1, 1, to_play) or
-            self._check_direction(x, y, -1, -1, to_play) or
-            self._check_direction(x, y, 1, -1, to_play) or
-            self._check_direction(x, y, -1, 1, to_play)
-        )
+        return any(self._check_direction(x, y, d[0], d[1], to_play) for d in DIRECTIONS)
 
     def get_valid_moves(self, to_play):
         result = []
@@ -130,4 +117,6 @@ class Board:
             cur_x += dx
             cur_y += dy
 
-
+    @staticmethod
+    def _in_board(x, y):
+        return 0 <= x < 8 and 0 <= y < 8
